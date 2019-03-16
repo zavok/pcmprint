@@ -8,6 +8,7 @@
 #define CHLEN    32
 
 char *intens[]={"░", "▒", "▓", "█"};
+//char   *intens[]={" ", ".", "o", "8"};
 
 static void
 usage(char *cmd)
