@@ -6,7 +6,7 @@
 static int BLKSIZE = 1024;
 static int CHLEN   = 32;
 
-char intens[] = {'.', '0'};
+char intens[] = {'`', '@'};
 
 static void
 usage(char *cmd)
@@ -80,7 +80,7 @@ main(int argc, char **argv)
 			s++;
 			l -= 44100*4;
 			snprintf(buf, 11,  " %02d:%02d:%02d ",
-				(s/3600)%99, (s/60)%60, s%60);
+				(int)(s/3600)%99, (int)(s/60)%60, (int)s%60);
 			write(1, buf, 10);
 		} else  write(1, "          ", 10);
 		drawch(rmin, rmax);
