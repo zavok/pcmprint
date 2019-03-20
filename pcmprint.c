@@ -3,10 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
+#include <errno.h>
 static int BLKSIZE = 1024;
 static int CHLEN   = 32;
 
-char intens[] = {'.', '0'};
+char intens[] = {'`', '@'};
 
 static void
 usage(char *cmd)
@@ -31,11 +32,24 @@ drawch(int min, int max)
 		else write(1, &intens[0], 1);
 }
 
+static ulong
+readblk(int f, int16_t *blk)
+{
+	ulong n, m;
+	m = 0;
+	while(m!=BLKSIZE){
+		n = read(f, &blk[m/2], BLKSIZE-m);
+		m += n;
+		if (n == 0) break;
+	}
+	return m;
+}
+
 int
 main(int argc, char **argv)
 {
 	char buf[11];
-	ulong i, n, l, s;
+	ulong i, n, m, l, s;
 	int16_t *blk;
 	int ch, f, lmin, lmax, rmin,rmax;
 	f = 0;
@@ -65,7 +79,7 @@ main(int argc, char **argv)
 	blk = malloc(BLKSIZE);
 	l = 44100*4;
 	s = -1;
-	while ((n = read(f, blk, BLKSIZE)) > 0){
+	while ((n = readblk(f, blk)) != 0){
 		lmin = rmin = 0x7fff;
 		lmax = rmax = -0x7fff;
 		for (i=0; i<BLKSIZE/2; i+=2){
@@ -73,6 +87,7 @@ main(int argc, char **argv)
 			if (blk[i]   < lmin) lmin = blk[i];
 			if (blk[i+1] > rmax) rmax = blk[i+1];
 			if (blk[i+1] < rmin) rmin = blk[i+1];
+			blk[i] = blk[i+1] = 0;
 		}
 		l += n;
 		drawch(lmin, lmax);
