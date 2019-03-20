@@ -5,7 +5,7 @@
 #include <fcntl.h>
 
 static int BLKSIZE = 1024;
-static int CHLEN   = 32;
+static int CHLEN   = 33;
 char *intens = "`@";
 
 static void
