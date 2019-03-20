@@ -100,7 +100,7 @@ main(int argc, char **argv)
 			s++;
 			l -= 44100*4;
 			snprintf(buf, 11,  " %02d:%02d:%02d ",
-				(s/3600)%99, (s/60)%60, s%60);
+				(int)(s/3600)%99, (int)(s/60)%60, (int)s%60);
 			write(1, buf, 10);
 		} else  write(1, "          ", 10);
 		drawch(rmin, rmax);
