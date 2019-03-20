@@ -3,11 +3,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
-#include <errno.h>
+
 static int BLKSIZE = 1024;
 static int CHLEN   = 32;
-
-char intens[] = {'`', '@'};
+char *intens = "`@";
 
 static void
 usage(char *cmd)
@@ -57,11 +56,17 @@ main(int argc, char **argv)
 		switch (ch){
 		case 'b':
 			BLKSIZE = atoi(optarg);
-			if (BLKSIZE <= 0) BLKSIZE = 1;
+			if (BLKSIZE <= 0){
+				dprintf(2, "Error: -b too small: %d\n", BLKSIZE);
+				exit(-1);
+			} 
 			break;
 		case 'w':
 			CHLEN = atoi(optarg);
-			if (CHLEN <= 0) CHLEN = 1;
+			if (CHLEN <= 0){
+				dprintf(2, "Error: -w too small: %d\n", CHLEN);
+				exit(-1);
+			}
 			break;
 		default:
 			usage(argv[0]);
