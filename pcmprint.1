@@ -1,0 +1,45 @@
+.Dd $Mdocdate: March 20 2019 $
+.Dt PCMPRINT 1
+.Os
+.Sh NAME
+.Nm pcmprint
+.Nd prints PCM data into stdout
+.Sh SYNOPSIS
+.Nm pcmprint
+.Op Fl b Ar blocksize
+.Op Fl w Ar width
+.Op Ar file
+.Sh DESCRIPTION
+.Nm
+reads input (either stdin or file, if specified) and prints to stdout lines visualising the signal.
+Input data is assumed to be RAW PCM, signed, 16-bit, little-endian, stereo, with sampling rate of 44100 Hz.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl b Ar blocksize
+specifies size of the sample block to operate on.
+Size of the block is assumed to be in sampling frames, 4 bytes per frame.
+Default value is 1024.
+.It Fl v Ar width
+specifies width of the printed channel on the output.
+Default value is 35 characters, which with 2 channels and hardcoded 10 characters of separation fits nicely into standard 80-columns terminal.
+.Sh EXIT STATUS
+.Ex -std pcmprint
+.Sh EXAMPLES
+Use
+.Nm
+together with 
+.Xr tee 1
+to look at audio shape while it's playing:
+
+for
+.Xr sndio 7 :
+.Bd -literal -offset indent
+$ tee /dev/audio0 < music.raw | pcmprint
+.Ed
+
+for alsa:
+.Bd -literal -offset indent
+$ mkfifo /tmp/fifo
+$ (tee /tmp/fifo < music.raw | pcmprint) &
+$ aplay -f cd < /tmp/fifo
+.Ed

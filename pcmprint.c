@@ -5,7 +5,7 @@
 #include <fcntl.h>
 
 static int BLKSIZE = 1024;
-static int CHLEN   = 33;
+static int CHLEN   = 35;
 char *intens = "`@";
 
 static void
@@ -58,14 +58,14 @@ main(int argc, char **argv)
 			BLKSIZE = atoi(optarg);
 			if (BLKSIZE <= 0){
 				dprintf(2, "Error: -b too small: %d\n", BLKSIZE);
-				exit(-1);
+				exit(1);
 			} 
 			break;
 		case 'w':
 			CHLEN = atoi(optarg);
 			if (CHLEN <= 0){
 				dprintf(2, "Error: -w too small: %d\n", CHLEN);
-				exit(-1);
+				exit(1);
 			}
 			break;
 		default:
@@ -77,7 +77,7 @@ main(int argc, char **argv)
 		f = open(argv[optind], O_RDONLY);
 		if (f == -1) {
 			dprintf(2, "Error: can't open %s\n", argv[optind]);
-			exit(-1); 
+			exit(1);
 		}
 	}
 	BLKSIZE = BLKSIZE * 4; /*2 channels x 2 bytes*/
