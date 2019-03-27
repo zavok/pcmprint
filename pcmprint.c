@@ -4,8 +4,8 @@
 #include <string.h>
 #include <fcntl.h>
 
-static int BLKSIZE = 1024;
-static int CHLEN   = 35;
+static size_t BLKSIZE = 1024;
+static int32_t CHLEN   = 35;
 char *intens = "`@";
 
 static void
@@ -15,15 +15,16 @@ usage(char *cmd)
 	exit(-1);
 }
 
-static int
-norm(int v){
+static int32_t
+norm(int32_t v){
 	return (CHLEN + CHLEN * v / 0x7fff) / 2;
 }
 
 static void
-drawch(int min, int max)
+drawch(int32_t min, int32_t max)
 {
-	int i, Min, Max;
+	size_t i;
+	int32_t Min, Max;
 	Min = norm(min);
 	Max = norm(max);
 	for (i = 0; i < CHLEN; i++)
@@ -34,7 +35,7 @@ drawch(int min, int max)
 static ulong
 readblk(int f, int16_t *blk)
 {
-	ulong n, m;
+	size_t n, m;
 	m = 0;
 	while(m!=BLKSIZE){
 		n = read(f, &blk[m/2], BLKSIZE-m);
@@ -48,9 +49,10 @@ int
 main(int argc, char **argv)
 {
 	char buf[11];
-	ulong i, n, m, l, s;
+	int ch;
+	size_t i, n, m, l, s;
 	int16_t *blk;
-	int ch, f, lmin, lmax, rmin,rmax;
+	int32_t f, lmin, lmax, rmin,rmax;
 	f = 0;
 	while ((ch = getopt(argc, argv, "b:w:")) != -1){
 		switch (ch){
