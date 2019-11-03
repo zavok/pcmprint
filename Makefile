@@ -12,8 +12,7 @@ all: $(BIN)
 $(BIN): $(OBJ)
 	$(CC) $(OBJ) $(LDFLAGS) $(LIBS) -o $@
 
-pcmprint: pcmprint.c
-	cc pcmprint.c -o pcmprint
+$(OBJ): pcmprint.c
 
 install: $(BIN)
 	mkdir -p $(DESTDIR)$(PREFIX)/bin/
