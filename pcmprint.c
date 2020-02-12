@@ -8,6 +8,8 @@ static size_t BLKSIZE = 1024;
 static int32_t CHLEN   = 30;
 char *intens = "`@";
 
+#define NORM(x) (CHLEN + CHLEN * x / 0x7fff) / 2
+
 static void
 usage(char *cmd)
 {
@@ -15,18 +17,13 @@ usage(char *cmd)
 	exit(-1);
 }
 
-static int32_t
-norm(int32_t v){
-	return (CHLEN + CHLEN * v / 0x7fff) / 2;
-}
-
 static void
 drawch(int32_t min, int32_t max)
 {
 	size_t i;
 	int32_t Min, Max;
-	Min = norm(min);
-	Max = norm(max);
+	Min = NORM(min);
+	Max = NORM(max);
 	for (i = 0; i < CHLEN; i++)
 		if ((i>=Min)&&(i<=Max)) write(1, &intens[1], 1);
 		else write(1, &intens[0], 1);
