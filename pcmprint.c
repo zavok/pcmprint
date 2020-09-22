@@ -47,7 +47,7 @@ main(int argc, char **argv)
 {
 	char buf[11];
 	int ch;
-	size_t i, n, m, l, s;
+	size_t i, n, l, s;
 	int16_t *blk;
 	int32_t f, lmin, lmax, rmin,rmax;
 	f = 0;
@@ -56,7 +56,7 @@ main(int argc, char **argv)
 		case 'b':
 			BLKSIZE = atoi(optarg);
 			if (BLKSIZE <= 0){
-				dprintf(2, "Error: -b too small: %d\n", BLKSIZE);
+				dprintf(2, "Error: -b too small: %ld\n", BLKSIZE);
 				exit(1);
 			} 
 			break;

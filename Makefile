@@ -1,32 +1,31 @@
-.POSIX:
+include config.mk
 
-PREFIX = /usr/local
-MANDIR = $(PREFIX)/share/man/man1
+SRC = pcmprint.c
+OBJ = ${SRC:.c=.o}
 
-BIN = pcmprint
-MAN = $(BIN).1
-OBJ = $(BIN:=.o)
-
-all: $(BIN)
-
-$(BIN): $(OBJ)
-	$(CC) $(OBJ) $(LDFLAGS) $(LIBS) -o $@
-
-$(OBJ):
-
-install: $(BIN)
-	mkdir -p $(DESTDIR)$(PREFIX)/bin/
-	cp -f $(BIN) $(DESTDIR)$(PREFIX)/bin/
-	chmod 555 $(DESTDIR)$(PREFIX)/bin/$(BIN)
-	mkdir -p $(DESTDIR)$(MANDIR)
-	cp -f $(MAN) $(DESTDIR)$(MANDIR)
-
-uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/$(BIN)
-	rm -f $(DESTDIR)$(MANDIR)/$(MAN)
-
-clean:
-	rm -f $(BIN) $(OBJ)
+all: pcmprint
 
 .c.o:
-	$(CC) $(CFLAGS) -c $<
+	${CC} -c ${CFLAGS} $<
+
+${OBJ}:
+
+pcmprint: ${OBJ}
+	${CC} -o $@ ${OBJ} ${LDFLAGS}
+
+install: all
+	mkdir -p ${DESTDIR}${PREFIX}/bin/
+	cp -f pcmprint $(DESTDIR)${PREFIX}/bin/
+	chmod 755 ${DESTDIR}${PREFIX}/bin/pcmprint
+	mkdir -p ${DESTDIR}${MANDIR}/man1
+	cp -f pcmprint.1 ${DESTDIR)${MANDIR}/man1/pcmprint.1
+	chmod 644 ${DESTDIR}${MANPREFIX}/man1/pcmprint.1
+
+uninstall:
+	rm -f ${DESTDIR}${PREFIX}/bin/pcmprint\
+		${DESTDIR}${MANDIR}/pcmprint.1
+
+clean:
+	rm -f pcmprint ${OBJ}
+
+.PHONY: all clean instal uninstall
