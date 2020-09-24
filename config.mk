@@ -6,7 +6,7 @@ LIBS =
 
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L
 CFLAGS   = -g -std=c99 -pedantic -Wall -Wno-deprecated-declarations -Os ${INCS} ${CPPFLAGS}
-LDfLAGS  = ${LIBS}
+LDFLAGS  = ${LIBS}
 
 CC = cc
 
